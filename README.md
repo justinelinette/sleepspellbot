@@ -1,1 +1,1 @@
-# sleepspellbot
+discord bot for calculating dnd sleep spell results
