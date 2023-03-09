@@ -2,6 +2,8 @@ import discord
 from app.config.config import Config
 from app.modules.sleep_spell.controllers.sleep_spell import SleepController
 
+config = Config()
+
 
 class Bot():
 
@@ -13,14 +15,16 @@ class Bot():
         self.intents.message_content = True
         self.client = discord.Client(intents=self.intents)
 
-    def start_bot(self, DISCORD_TOKEN):
+    def start_bot(self):
 
         @self.client.event
         async def on_ready():
-            print('logged in as {0.user}'.format(self.client))
+            print("logged in as {0.user}".format(self.client))
 
         @self.client.event
         async def on_message(message):
-            await SleepController(message, self.client).on_message()
+            prefix = message.content.split(" ")[0]
+            if prefix.startswith("!"):
+                await SleepController(message, self.client).on_message(prefix)
 
-        self.client.run(DISCORD_TOKEN)
+        self.client.run(config.DISCORD_TOKEN)
